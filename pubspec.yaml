@@ -1,7 +1,7 @@
 name: gen_z_designs
-description: A new Flutter package project.
+description: GenZdesigns is open source library that come with pre-build & easy to customize UI components for GenZ's to fasten and ease their development.
 version: 0.0.1
-homepage:
+homepage: https://github.com/kaushalzod/GenZdesigns
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
