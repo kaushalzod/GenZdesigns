@@ -26,7 +26,19 @@ flutter pub add gen_z_design
 
 ## Usage
 
-import `import 'package:gen_z_designs/gen_z_designs.dart'` folder. 
+To use this package :
+
+* add the dependency to your [pubspec.yaml](https://github.com/kaushalzod/GenZdesigns/blob/master/pubspec.yaml) file.
+
+```yaml
+  dependencies:
+    flutter:
+      sdk: flutter
+    gen_z_designs:
+```
+#### How to use
+
+import `import 'package:gen_z_designs/gen_z_designs.dart'` \ 
 
 ```dart
 // Basic Use of GenZButton 
@@ -41,6 +53,21 @@ GenZButton(
     text: "GenZdesign: Designs of new Generation.",
     type: GenZButtonType.OUTLINED,
 );
+
+// GenZButton with Transparent
+GenZButton(
+    onPressed: () {},
+    text: "GenZdesign: Designs of new Generation.",
+    type: GenZButtonType.TRANSPARENT,
+);
+
+// Try these below properties in GenZButton
+
+GenZPosition { LEADING, TRAILING, CENTER }
+GenZButtonShape { SQUARE, PILL, DEFAULT }
+GenZSize { SMALL, MEDIUM, LARGE, XLARGE }
+GenZButtonType { FILL, TRANSPARENT, OUTLINED, OUTLINED2X }
+
 ```
 
 ## Additional information
