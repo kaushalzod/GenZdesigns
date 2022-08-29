@@ -1,1 +1,1 @@
-enum GenZButtonSize { small, medium, large, xlarge }
+enum GenZSize { SMALL, MEDIUM, LARGE, XLARGE }

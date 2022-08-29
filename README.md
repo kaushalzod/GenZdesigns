@@ -10,30 +10,39 @@ For general information about developing packages, see the Dart guide for
 and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
+## About Package
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+ GenZdesigns is an open source library that come with pre-build & easy to customize UI components for GenZ's to fasten and ease their development.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+* GenZButton  
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+`
+flutter pub add gen_z_design
+`
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+import `import 'package:gen_z_designs/gen_z_designs.dart'` folder. 
 
 ```dart
-const like = 'sample';
+// Basic Use of GenZButton 
+GenZButton(
+    onPressed: () {},
+    text: "GenZdesign: Designs of new Generation.",
+);
+
+// GenZButton with outline
+GenZButton(
+    onPressed: () {},
+    text: "GenZdesign: Designs of new Generation.",
+    type: GenZButtonType.OUTLINED,
+);
 ```
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+Checkout everything at: https://github.com/kaushalzod/GenZdesigns

@@ -1,1 +1,1 @@
-enum GenZPosition { leading, trailing, center }
+enum GenZPosition { LEADING, TRAILING, CENTER }
