@@ -9,6 +9,7 @@
 .history
 .svn/
 migrate_working_dir/
+.vscode
 
 # IntelliJ related
 *.iml
@@ -28,3 +29,7 @@ migrate_working_dir/
 .dart_tool/
 .packages
 build/
+.flutter-plugins
+.pub-cache/
+.pub/
+web/
