@@ -1,6 +1,6 @@
 name: gen_z_designs
 description: GenZdesigns is open source library that come with pre-build & easy to customize UI components for GenZ's to fasten and ease their development.
-version: 0.0.1
+version: 0.0.1-pre.1
 homepage: https://github.com/kaushalzod/GenZdesigns
 
 environment:
