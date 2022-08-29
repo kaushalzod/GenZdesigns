@@ -11,4 +11,22 @@ class GenZColors {
   static Color error = const Color(0xffF04141);
   static const Color white = Color(0xffffffff);
   static const Color transparent = Colors.transparent;
+  static updateColor(
+      {Color? primaryColor,
+      Color? secondaryColor,
+      Color? tertiaryColor,
+      Color? darkColor,
+      Color? complimentryColor,
+      Color? successColor,
+      Color? warningColor,
+      Color? errorColor}) {
+    primary = primaryColor ?? primary;
+    secondary = secondaryColor ?? secondary;
+    tertiary = tertiaryColor ?? tertiary;
+    dark = darkColor ?? dark;
+    complimentry = complimentryColor ?? complimentry;
+    success = successColor ?? success;
+    warning = warningColor ?? warning;
+    error = errorColor ?? error;
+  }
 }
