@@ -2,60 +2,105 @@ import 'package:flutter/material.dart';
 import 'package:gen_z_designs/gen_z_designs.dart';
 
 class GenZButton extends StatefulWidget {
-  /// Tested [text] working perfectly with [textColor] and [textStyle]
+  /// Text takes [String] and If [child] and [text] both are given then [text] will be given priority.
   final String? text;
 
-  /// Tested [onPressed] and working when [Null] condition its disabled
+  /// When [GenZButton] is tapped or pressed if given [Null] button will be disabled.
   final void Function()? onPressed;
 
-  /// Tested [child] and is working fine with [Text] and [Container]
+  /// Label for the [GenZButton].
+  /// Takes [Widget] and will be given less priority than [text].
   final Widget? child;
 
-  /// Tested [icon] with [child], [position], working fine
+  /// Takes [Widget] as an [Icon] and can be used alone as [IconButton].
+  ///
+  /// ``Example``
+  /// ```dart
+  /// GenZButton(
+  ///   onPressed: () {},
+  ///   icon: const Icon(Icons.favorite),
+  ///   type: GenZButtonType.TRANSPARENT,
+  /// )
+  /// ```
   final Widget? icon;
 
-  /// Tested [position] with [child],[icon] and [text] added assertion for center.
+  /// Defualt position is [GenZPosition.LEADING].
+  ///
+  /// Takes [GenZPosition] and this will decide where [icon] and ([text] or [child]) will be shown.
+  ///
+  /// [GenZPosition.CENTER],[GenZPosition.LEADING],[GenZPosition.TRAILING]
+  ///
+  /// `When [icon] is used with [child] or [text] then position can't be [GenZPosition.CENTER]`.
   final GenZPosition position;
 
-  /// Tested [size] with all [GenZSize] working fine
+  /// Defualt [size]  is [GenZSize.MEDIUM].
+  ///
+  /// Takes [GenZSize] and have four sizes:
+  ///
+  /// [GenZSize.SMALL], [GenZSize.MEDIUM], [GenZSize.LARGE], [GenZSize.XLARGE]
   final GenZSize size;
 
-  /// Tested [padding] working fine
+  /// Padding for the content.
   final EdgeInsets? padding;
 
-  /// Tested [elevation] working fine
+  /// Default [elevation] is 0.
   final double elevation;
 
-  /// Tested [disabledColor] working fine
+  /// If [disabledColor] not given then it will take [color] with 60% opacity.
   final Color? disabledColor;
+
+  /// Default [disabledElevation] is 0.
   final double disabledElevation;
+
+  /// Default [focusElevation] is 0.
   final double focusElevation;
+
+  /// Default [hoverElevation] is 0.
   final double hoverElevation;
+
+  /// Default [highlightElevation] is 0.
   final double highlightElevation;
 
-  /// Tested [height] working fine
+  /// Default [height] is 0.
+  ///
+  /// Some height of button is taken from padding, to completely erase height use [height] and [padding] zero.
   final double? height;
 
-  /// Tested [minWidth] and working fine
+  /// Defualt [minWidth] is 0.
   final double? minWidth;
 
-  /// Tested [color] and working fine //!can be improved with fontcolor and all
+  /// Default [color] is [GenZColors.primary] for defualt [GenZButtonType.FILL] button type.
   final Color? color;
 
-  /// Tested [textStyle] with [text] and is working fine also will only work with text
+  /// [textStyle] is only applicable to text provided using [text] params.
   final TextStyle? textStyle;
 
-  ///! Not implemented this feature yet
+  /// Defualt [type] is [GenZButtonType.FILL].
+  ///
+  /// Takes [GenZButtonType] and have four types:
+  ///
+  /// [GenZButtonType.FILL], [GenZButtonType.OUTLINED], [GenZButtonType.OUTLINED2X], [GenZButtonType.TRANSPARENT]
   final GenZButtonType? type;
 
-  /// Tested [textColor] with [text], [child] and [icon] and is working fine
+  /// [textColor] works for all [text],[child],[icon]
+  ///
+  /// Also [textColor] have less priority over [textStyle.color]
   final Color? textColor;
 
-  ///! Have to test in real device
+  /// Default is false.
   final bool enableFeedback;
 
+  /// Splash color for icon is transparent
   final Color? splashColor;
+
+  /// [highlightColor] color for icon is transparent
   final Color? highlightColor;
+
+  /// Defualt [shape] is [GenZButtonShape.DEFAULT].
+  ///
+  /// Takes [GenZButtonShape] and have three shapes:
+  ///
+  /// [GenZButtonShape.DEFAULT], [GenZButtonShape.PILL], [GenZButtonShape.SQUARE]
   final GenZButtonShape? shape;
 
   const GenZButton({
@@ -110,8 +155,8 @@ class _GenZButtonState extends State<GenZButton> {
         ? Text(widget.text.toString(),
             style: widget.textStyle ??
                 TextStyle(
-                  fontSize: getTextStyle()[0],
-                  fontWeight: getTextStyle()[1],
+                  fontSize: _getTextStyle()[0],
+                  fontWeight: _getTextStyle()[1],
                 ))
         : widget.child;
     position = widget.position;
@@ -127,8 +172,8 @@ class _GenZButtonState extends State<GenZButton> {
         ? Text(widget.text.toString(),
             style: widget.textStyle ??
                 TextStyle(
-                  fontSize: getTextStyle()[0],
-                  fontWeight: getTextStyle()[1],
+                  fontSize: _getTextStyle()[0],
+                  fontWeight: _getTextStyle()[1],
                 ))
         : widget.child;
     icon = widget.icon;
@@ -156,36 +201,45 @@ class _GenZButtonState extends State<GenZButton> {
       highlightElevation: widget.highlightElevation,
       disabledElevation: widget.disabledElevation,
       disabledColor: widget.disabledColor ?? widget.color?.withOpacity(.6),
-      textColor: widget.textStyle?.color ?? getTextColor(),
-      color: getButtonColor(),
+      textColor: widget.textStyle?.color ?? _getTextColor(),
+      color: _getButtonColor(),
       padding: widget.padding ??
           EdgeInsets.symmetric(
             horizontal: (icon == null)
                 ? (child == null ? 0 : 15)
                 : (child == null ? 8 : 15),
-            vertical: getVerticalPadding(),
+            vertical: _getVerticalPadding(),
           ),
       minWidth: widget.minWidth ?? 0,
       // minWidth:
       //     (icon == null) ? (child == null ? 0 : 80) : (child == null ? 40 : 90),
       height: widget.height ?? 0,
       shape: RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.circular(widget.shape == GenZButtonShape.PILL
-                  ? MediaQuery.of(context).size.height
-                  : widget.shape == GenZButtonShape.SQUARE
-                      ? 0
-                      : 5),
-          side: BorderSide(
-              color: widget.type == GenZButtonType.OUTLINED ||
-                      widget.type == GenZButtonType.OUTLINED2X
-                  ? widget.color ?? GenZColors.dark
-                  : GenZColors.transparent,
-              width: widget.type == GenZButtonType.OUTLINED ? 1 : 2)),
-      splashColor:
-          widget.splashColor ?? (child == null && icon != null ? null : null),
+        borderRadius: BorderRadius.circular(widget.shape == GenZButtonShape.PILL
+            ? MediaQuery.of(context).size.height
+            : widget.shape == GenZButtonShape.SQUARE
+                ? 0
+                : 5),
+        side: BorderSide(
+          color: widget.type == GenZButtonType.OUTLINED ||
+                  widget.type == GenZButtonType.OUTLINED2X
+              ? widget.color ?? GenZColors.dark
+              : GenZColors.transparent,
+          width: widget.type == GenZButtonType.OUTLINED ? 1 : 2,
+        ),
+      ),
+      splashColor: widget.splashColor ??
+          (child == null &&
+                  icon != null &&
+                  widget.type == GenZButtonType.TRANSPARENT
+              ? GenZColors.transparent
+              : null),
       highlightColor: widget.highlightColor ??
-          (child == null && icon != null ? null : null),
+          (child == null &&
+                  icon != null &&
+                  widget.type == GenZButtonType.TRANSPARENT
+              ? GenZColors.transparent
+              : null),
       child: icon != null && child != null && position == GenZPosition.LEADING
           ? Row(
               mainAxisSize: MainAxisSize.min,
@@ -202,7 +256,8 @@ class _GenZButtonState extends State<GenZButton> {
     );
   }
 
-  Color getButtonColor() {
+  /// Function used to get button color according to several conditions
+  Color _getButtonColor() {
     if (widget.type == GenZButtonType.FILL && widget.color != null) {
       return widget.color!;
     } else if (widget.type == GenZButtonType.FILL && widget.color == null) {
@@ -216,7 +271,8 @@ class _GenZButtonState extends State<GenZButton> {
     }
   }
 
-  Color? getTextColor() {
+  /// Function used to get text color according to several conditions
+  Color? _getTextColor() {
     if (widget.textColor != null) {
       return widget.textColor;
     } else if (widget.textColor == null) {
@@ -229,7 +285,7 @@ class _GenZButtonState extends State<GenZButton> {
           return GenZColors.dark;
         }
       } else if (widget.color != null) {
-        if (isWhiteAndTransparent(widget.color)) {
+        if (_isWhiteAndTransparent(widget.color)) {
           return GenZColors.dark;
         } else if (widget.type == GenZButtonType.OUTLINED ||
             widget.type == GenZButtonType.OUTLINED2X) {
@@ -244,7 +300,8 @@ class _GenZButtonState extends State<GenZButton> {
     return null;
   }
 
-  List getTextStyle() {
+  /// Function used to get text Style according to button size
+  List _getTextStyle() {
     if (widget.size == GenZSize.SMALL) {
       return [12.0, FontWeight.w400];
     } else if (widget.size == GenZSize.MEDIUM) {
@@ -258,7 +315,8 @@ class _GenZButtonState extends State<GenZButton> {
     }
   }
 
-  double getVerticalPadding() {
+  /// Function used to get vertical padding according to button size
+  double _getVerticalPadding() {
     if (widget.size == GenZSize.MEDIUM) {
       return 10;
     } else if (widget.size == GenZSize.LARGE) {
@@ -270,7 +328,8 @@ class _GenZButtonState extends State<GenZButton> {
     }
   }
 
-  isWhiteAndTransparent(Color? color) {
+  /// Check if passed color is white or transparent
+  bool _isWhiteAndTransparent(Color? color) {
     if (color == GenZColors.white || color == GenZColors.transparent) {
       return true;
     } else {
