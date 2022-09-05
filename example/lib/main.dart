@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gen_z_designs/component/gen_z_countdown.dart';
 import 'package:gen_z_designs/gen_z_designs.dart';
 
 void main() {
@@ -37,6 +38,13 @@ class MyHomePage extends StatelessWidget {
               text: "GenZdesign: Designs of new Generation.",
               type: GenZButtonType.OUTLINED,
             ),
+            GenZCountdown(
+              duration: Duration(
+                milliseconds: DateTime.parse("2022-09-07 13:27:00")
+                    .difference(DateTime.now())
+                    .inMilliseconds,
+              ),
+            )
           ],
         ),
       ),
