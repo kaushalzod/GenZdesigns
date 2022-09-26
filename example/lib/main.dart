@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gen_z_designs/component/gen_z_countdown.dart';
 import 'package:gen_z_designs/gen_z_designs.dart';
 
 void main() {
@@ -39,8 +38,9 @@ class MyHomePage extends StatelessWidget {
               type: GenZButtonType.OUTLINED,
             ),
             GenZCountdown(
+              // Sale Time is 2022-12-22 at 12:00 PM
               duration: Duration(
-                milliseconds: DateTime.parse("2022-09-07 13:27:00")
+                milliseconds: DateTime.parse("2022-12-22 12:00:00")
                     .difference(DateTime.now())
                     .inMilliseconds,
               ),

@@ -36,9 +36,12 @@ To use this package :
       sdk: flutter
     gen_z_designs:
 ```
-#### How to use
 
-import `import 'package:gen_z_designs/gen_z_designs.dart'` \ 
+* then import package 
+  * `import 'package:gen_z_designs/gen_z_designs.dart'`
+#### How to use:
+
+###### GenZButton 
 
 ```dart
 // Basic Use of GenZButton 
@@ -69,7 +72,16 @@ GenZSize { SMALL, MEDIUM, LARGE, XLARGE }
 GenZButtonType { FILL, TRANSPARENT, OUTLINED, OUTLINED2X }
 
 ```
+###### GenZCountDown
 
+ ```dart
+// Basic Use of GenZCountdown 
+GenZCountdown(
+    duration: Duration(seconds: 300),
+);
+
+
+```
 ## Additional information
 
 Checkout everything at: https://github.com/kaushalzod/GenZdesigns

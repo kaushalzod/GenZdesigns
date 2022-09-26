@@ -32,6 +32,8 @@ class GenZCountdown extends StatefulWidget {
 
   ///Duration for which timer should be shown.
   ///
+  ///When [isIncremental] is true then duration will be act as end time when the timer should stop.
+  ///
   ///Info: Show sale time like below so it wont reset when app state changes.
   ///
   ///```dart
@@ -73,11 +75,13 @@ class GenZCountdown extends StatefulWidget {
 
 class _GenZCountdownState extends State<GenZCountdown> {
   late Duration _duration;
+  bool _replacement = false;
   Timer? timer;
   late TextStyle _textStyle;
   @override
   void initState() {
-    _duration = widget.duration;
+    _duration =
+        widget.isIncremental ? const Duration(seconds: 0) : widget.duration;
     _textStyle = widget.textStyle ?? const TextStyle(color: Colors.black);
     startTimer();
     super.initState();
@@ -92,9 +96,12 @@ class _GenZCountdownState extends State<GenZCountdown> {
     setState(() {
       final updateBy = widget.isIncremental ? 1 : -1;
       final seconds = _duration.inSeconds + updateBy;
-
-      if (seconds < 0) {
+      if (widget.isIncremental
+          ? (seconds > widget.duration.inSeconds)
+          : (seconds < 0)) {
+        widget.onDone?.call();
         timer?.cancel();
+        _replacement = widget.replacement != null ? true : false;
       } else {
         _duration = Duration(seconds: seconds);
       }
@@ -116,55 +123,57 @@ class _GenZCountdownState extends State<GenZCountdown> {
     final minutes = twoDigits(_duration.inMinutes.remainder(60));
     final seconds = twoDigits(_duration.inSeconds.remainder(60));
 
-    return _duration.inSeconds > 0
-        ? (widget.customWiget == null
-            ? RichText(
-                text: TextSpan(
-                  style: _textStyle,
-                  children: [
-                    TextSpan(text: widget.showHours ? hours : null),
-                    TextSpan(
-                      text: widget.seperatorText != null
-                          ? (widget.showHours
-                              ? widget.seperatorText?.hours
-                              : null)
-                          : null,
-                      style: widget.seperatorText?.style,
-                    ),
-                    TextSpan(
-                        text: widget.showHours
-                            ? (widget.seperatorText?.seperator ?? ' : ')
-                            : null),
-                    TextSpan(text: widget.showMin ? minutes : null),
-                    TextSpan(
-                      text: widget.seperatorText != null
-                          ? (widget.showMin ? widget.seperatorText?.mins : null)
-                          : null,
-                      style: widget.seperatorText?.style,
-                    ),
-                    TextSpan(
-                        text: widget.showSeconds && widget.showMin
-                            ? (widget.seperatorText?.seperator ?? ' : ')
-                            : null),
-                    TextSpan(text: widget.showSeconds ? seconds : null),
-                    TextSpan(
-                      text: widget.seperatorText != null
-                          ? (widget.showSeconds
-                              ? widget.seperatorText?.sec
-                              : null)
-                          : '',
-                      style: widget.seperatorText?.style,
-                    ),
-                  ],
-                ),
-              )
-            : widget.customWiget!.call(hours, minutes, seconds))
-        : widget.replacement != null
-            ? widget.replacement!
-            : Text(
-                ('$hours : $minutes : $seconds'),
-                style: widget.textStyle,
-              );
+    if (_replacement) {
+      // Replacement Widget
+      return widget.replacement!;
+    } else {
+      if (widget.customWiget != null) {
+        // Customwidget
+        return widget.customWiget!.call(hours, minutes, seconds);
+      } else {
+        // Default Text Widget
+        return RichText(
+          text: TextSpan(
+            style: _textStyle,
+            children: [
+              TextSpan(text: widget.showHours ? hours : null),
+              TextSpan(
+                text: widget.seperatorText != null
+                    ? (widget.showHours ? widget.seperatorText?.hours : null)
+                    : null,
+                style: widget.seperatorText?.style,
+              ),
+              TextSpan(
+                text: widget.showHours
+                    ? (widget.seperatorText?.seperator ?? ' : ')
+                    : null,
+                style: widget.seperatorText?.style ?? _textStyle,
+              ),
+              TextSpan(text: widget.showMin ? minutes : null),
+              TextSpan(
+                text: widget.seperatorText != null
+                    ? (widget.showMin ? widget.seperatorText?.mins : null)
+                    : null,
+                style: widget.seperatorText?.style,
+              ),
+              TextSpan(
+                text: widget.showSeconds && widget.showMin
+                    ? (widget.seperatorText?.seperator ?? ' : ')
+                    : null,
+                style: widget.seperatorText?.style ?? _textStyle,
+              ),
+              TextSpan(text: widget.showSeconds ? seconds : null),
+              TextSpan(
+                text: widget.seperatorText != null
+                    ? (widget.showSeconds ? widget.seperatorText?.sec : null)
+                    : '',
+                style: widget.seperatorText?.style,
+              ),
+            ],
+          ),
+        );
+      }
+    }
   }
 }
 
