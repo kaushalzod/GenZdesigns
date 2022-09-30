@@ -1,0 +1,1 @@
+enum BadgeType { INSIDE, OUTSIDE }

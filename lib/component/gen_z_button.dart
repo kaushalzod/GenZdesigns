@@ -93,6 +93,22 @@ class GenZButton extends StatefulWidget {
   /// Splash color for icon is transparent
   final Color? splashColor;
 
+  /// Badge if true will show badge over button
+  final bool badge;
+
+  final BadgeType badgeType;
+
+  /// Widget for badge text to be display inside
+  final Widget? badgeText;
+
+  /// BadgePosition Outside Positions and default will be right=0 and size will be 12 if not provided
+  ///
+  /// Note: This param will only useful for BadgePosition.OUTSIDE
+  final BadgePosition badgePosition;
+
+  /// Default badge color will be picked from color property of button
+  final Color? badgeColor;
+
   /// [highlightColor] color for icon is transparent
   final Color? highlightColor;
 
@@ -115,9 +131,14 @@ class GenZButton extends StatefulWidget {
     this.padding,
     this.enableFeedback = false,
     this.color,
+    this.badgeText,
+    this.badgeColor,
     this.splashColor,
+    this.badgeType = BadgeType.OUTSIDE,
     this.size = GenZSize.MEDIUM,
     this.highlightColor,
+    this.badge = false,
+    this.badgePosition = const BadgePosition(right: 0),
     this.textColor,
     this.height,
     this.minWidth,
@@ -138,6 +159,8 @@ class GenZButton extends StatefulWidget {
               : true,
           POSITIONCENTERERROR,
         ),
+        assert(badgeType == BadgeType.INSIDE ? badgeText != null : true,
+            "If BadgeType is Inside then badgeText cant be null"),
         super(key: key);
   @override
   State<GenZButton> createState() => _GenZButtonState();
@@ -192,68 +215,9 @@ class _GenZButtonState extends State<GenZButton> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(
-      enableFeedback: widget.enableFeedback,
-      onPressed: widget.onPressed,
-      elevation: widget.elevation,
-      hoverElevation: widget.hoverElevation,
-      focusElevation: widget.focusElevation,
-      highlightElevation: widget.highlightElevation,
-      disabledElevation: widget.disabledElevation,
-      disabledColor: widget.disabledColor ?? widget.color?.withOpacity(.6),
-      textColor: widget.textStyle?.color ?? _getTextColor(),
-      color: _getButtonColor(),
-      padding: widget.padding ??
-          EdgeInsets.symmetric(
-            horizontal: (icon == null)
-                ? (child == null ? 0 : 15)
-                : (child == null ? 8 : 15),
-            vertical: _getVerticalPadding(),
-          ),
-      minWidth: widget.minWidth ?? 0,
-      // minWidth:
-      //     (icon == null) ? (child == null ? 0 : 80) : (child == null ? 40 : 90),
-      height: widget.height ?? 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(widget.shape == GenZButtonShape.PILL
-            ? MediaQuery.of(context).size.height
-            : widget.shape == GenZButtonShape.SQUARE
-                ? 0
-                : 5),
-        side: BorderSide(
-          color: widget.type == GenZButtonType.OUTLINED ||
-                  widget.type == GenZButtonType.OUTLINED2X
-              ? widget.color ?? GenZColors.dark
-              : GenZColors.transparent,
-          width: widget.type == GenZButtonType.OUTLINED ? 1 : 2,
-        ),
-      ),
-      splashColor: widget.splashColor ??
-          (child == null &&
-                  icon != null &&
-                  widget.type == GenZButtonType.TRANSPARENT
-              ? GenZColors.transparent
-              : null),
-      highlightColor: widget.highlightColor ??
-          (child == null &&
-                  icon != null &&
-                  widget.type == GenZButtonType.TRANSPARENT
-              ? GenZColors.transparent
-              : null),
-      child: icon != null && child != null && position == GenZPosition.LEADING
-          ? Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [icon!, const SizedBox(width: 8), child!],
-            )
-          : icon != null && child != null && position == GenZPosition.TRAILING
-              ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [child!, const SizedBox(width: 8), icon!],
-                )
-              : icon ?? child,
-    );
+    return widget.badge && widget.badgeType == BadgeType.OUTSIDE
+        ? _badgeButtonOutside()
+        : _mainButton();
   }
 
   /// Function used to get button color according to several conditions
@@ -269,6 +233,131 @@ class _GenZButtonState extends State<GenZButton> {
     } else {
       return GenZColors.primary;
     }
+  }
+
+  /// If badgeOutside is used then this will be the button
+  Widget _badgeButtonOutside() {
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(5),
+          child: _mainButton(),
+        ),
+        Positioned(
+          right: widget.badgePosition.right,
+          left: widget.badgePosition.left,
+          bottom: widget.badgePosition.bottom,
+          top: widget.badgePosition.top,
+          child: Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(
+                widget.badgePosition.size ?? 12,
+              ),
+              color: widget.badgeColor ?? GenZColors.secondary,
+            ),
+            width: widget.badgePosition.size ?? 12,
+            height: widget.badgePosition.size ?? 12,
+            child: widget.badgeText,
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Main button if no badge is provided
+  Widget _mainButton() {
+    return MaterialButton(
+        enableFeedback: widget.enableFeedback,
+        onPressed: widget.onPressed,
+        elevation: widget.elevation,
+        hoverElevation: widget.hoverElevation,
+        focusElevation: widget.focusElevation,
+        highlightElevation: widget.highlightElevation,
+        disabledElevation: widget.disabledElevation,
+        disabledColor: widget.disabledColor ?? widget.color?.withOpacity(.6),
+        textColor: widget.textStyle?.color ?? _getTextColor(),
+        color: _getButtonColor(),
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        padding: widget.padding ??
+            EdgeInsets.symmetric(
+              horizontal: (icon == null)
+                  ? (child == null ? 0 : 15)
+                  : (child == null ? 8 : 15),
+              vertical: _getVerticalPadding(),
+            ),
+        minWidth: widget.minWidth ?? 0,
+        // minWidth:
+        //     (icon == null) ? (child == null ? 0 : 80) : (child == null ? 40 : 90),
+        height: widget.height ?? 0,
+        shape: RoundedRectangleBorder(
+          borderRadius:
+              BorderRadius.circular(widget.shape == GenZButtonShape.PILL
+                  ? MediaQuery.of(context).size.height
+                  : widget.shape == GenZButtonShape.SQUARE
+                      ? 0
+                      : 5),
+          side: BorderSide(
+            color: widget.type == GenZButtonType.OUTLINED ||
+                    widget.type == GenZButtonType.OUTLINED2X
+                ? widget.color ?? GenZColors.dark
+                : GenZColors.transparent,
+            width: widget.type == GenZButtonType.OUTLINED ? 1 : 2,
+          ),
+        ),
+        splashColor: widget.splashColor ??
+            (child == null &&
+                    icon != null &&
+                    widget.type == GenZButtonType.TRANSPARENT
+                ? GenZColors.transparent
+                : null),
+        highlightColor: widget.highlightColor ??
+            (child == null &&
+                    icon != null &&
+                    widget.type == GenZButtonType.TRANSPARENT
+                ? GenZColors.transparent
+                : null),
+        child: icon != null && child != null && position == GenZPosition.LEADING
+            ? Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  icon!,
+                  const SizedBox(width: 8),
+                  child!,
+                  _insideBadge()
+                ],
+              )
+            : icon != null && child != null && position == GenZPosition.TRAILING
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      child!,
+                      const SizedBox(width: 8),
+                      icon!,
+                      _insideBadge()
+                    ],
+                  )
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [(icon ?? child)!, _insideBadge()],
+                  ));
+  }
+
+  Widget _insideBadge() {
+    return Visibility(
+      visible: widget.badge && widget.badgeType == BadgeType.INSIDE,
+      child: Container(
+        height: widget.badgePosition.size,
+        margin: const EdgeInsets.only(left: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        decoration: BoxDecoration(
+            color: widget.badgeColor, borderRadius: BorderRadius.circular(20)),
+        child: widget.badgeText ?? const Text("NA"),
+      ),
+    );
   }
 
   /// Function used to get text color according to several conditions

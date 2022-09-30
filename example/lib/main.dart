@@ -33,9 +33,14 @@ class MyHomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GenZButton(
+              badge: true,
               onPressed: () {},
-              text: "GenZdesign: Designs of new Generation.",
               type: GenZButtonType.OUTLINED,
+              badgeColor: Colors.amber,
+              badgePosition: const BadgePosition(left: 0),
+              badgeType: BadgeType.INSIDE,
+              badgeText: const Icon(Icons.abc, size: 18),
+              text: "Text Button",
             ),
             GenZCountdown(
               // Sale Time is 2022-12-22 at 12:00 PM
