@@ -16,7 +16,8 @@ and the Flutter guide for
 
 ## Features
 
-* GenZButton  
+* GenZButton
+* GenZCountdown
 
 ## Getting started
 
@@ -72,15 +73,51 @@ GenZSize { SMALL, MEDIUM, LARGE, XLARGE }
 GenZButtonType { FILL, TRANSPARENT, OUTLINED, OUTLINED2X }
 
 ```
+
+###### GenZButton with badge
+
+```dart
+// Button with badge outside it.
+// Default type of badge button
+GenZButton(
+    text: "Text Button",
+    onPressed: () {},
+    badge: true,
+    type: GenZButtonType.OUTLINED,
+    badgeColor: Colors.red,
+);
+
+// Button with badge inside it.
+GenZButton(
+    text: "Text Button",
+    onPressed: () {},
+    badge: true,
+    type: GenZButtonType.OUTLINED,
+    badgeColor: Colors.amber,
+    badgeType: BadgeType.INSIDE,
+    badgeText: const Icon(Icons.abc, size: 10),
+);
+
+// Try new prams of badges in GenZButton 
+```
 ###### GenZCountDown
 
  ```dart
-// Basic Use of GenZCountdown 
+// Basic Use of GenZCountdown for countdown for 300sec.
+// Will print GenZ Sale Ended when countdown completed.
 GenZCountdown(
     duration: Duration(seconds: 300),
+    onDone: () => print("GenZ Sale Ended"),
 );
 
+// Basic Use of GenZCountdown for countUp till 300sec.
+GenZCountdown(
+    duration: Duration(seconds: 300),
+    isIncremental: true,
+    onDone: () => print("GenZ Sale Ended"),
+);
 
+// Also try many params of GenZCountdown
 ```
 ## Additional information
 
