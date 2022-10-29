@@ -1,0 +1,1 @@
+enum GenZAvatarShape { SQUARE, DEFAULT }

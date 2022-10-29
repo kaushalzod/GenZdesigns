@@ -37,7 +37,7 @@ class MyHomePage extends StatelessWidget {
               onPressed: () {},
               type: GenZButtonType.OUTLINED,
               badgeColor: Colors.amber,
-              badgePosition: const BadgePosition(left: 0),
+              badgePosition: const GenZBadgePosition(left: 0),
               badgeType: BadgeType.INSIDE,
               badgeText: const Icon(Icons.abc, size: 18),
               text: "Text Button",
@@ -49,6 +49,9 @@ class MyHomePage extends StatelessWidget {
                     .difference(DateTime.now())
                     .inMilliseconds,
               ),
+            ),
+            const GenZAvatar(
+              url: "https://source.unsplash.com/random",
             )
           ],
         ),

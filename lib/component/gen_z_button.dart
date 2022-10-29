@@ -104,7 +104,7 @@ class GenZButton extends StatefulWidget {
   /// BadgePosition Outside Positions and default will be right=0 and size will be 12 if not provided
   ///
   /// Note: This param will only useful for BadgePosition.OUTSIDE
-  final BadgePosition badgePosition;
+  final GenZBadgePosition badgePosition;
 
   /// Default badge color will be picked from color property of button
   final Color? badgeColor;
@@ -138,7 +138,7 @@ class GenZButton extends StatefulWidget {
     this.size = GenZSize.MEDIUM,
     this.highlightColor,
     this.badge = false,
-    this.badgePosition = const BadgePosition(right: 0),
+    this.badgePosition = const GenZBadgePosition(right: 0),
     this.textColor,
     this.height,
     this.minWidth,
